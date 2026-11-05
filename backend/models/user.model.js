@@ -22,6 +22,14 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    bio: {
+        type: String,
+        required: true
+    },
+    dateOfBirth: {
+        type: String,
+        required: true
+    },
     refreshToken: {
         type: String
     }
