@@ -1,12 +1,13 @@
 import nodemailer from "nodemailer";
+import { _config } from "../config/config.js";
 
 const transporter = nodemailer.createTransport({
   host: "smtp.gmail.com",
   port: 587,
-  secure: false, // use STARTTLS (upgrade connection to TLS after connecting)
+  secure: false, 
   auth: {
-    user: "nidhish1132007@gmail.com",
-    pass: "msqr adlk rrgf psxp",
+    user: _config.SMTP_EMAIL,
+    pass: _config.SMTP_APP_PASSWORD,
   },
 });
 
