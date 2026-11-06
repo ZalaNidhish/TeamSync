@@ -18,4 +18,4 @@ app.get('/', (req, res)=>{
 
 app.use('/api/auth', authRouter)
 app.use('/api/admin', adminRouter)
-app.use('/api/department', departmentRouter)
+app.use('/api/departments', departmentRouter)
