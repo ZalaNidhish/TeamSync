@@ -3,7 +3,10 @@ export const app = express();
 import authRouter from './routes/auth.routes.js'
 import cors from 'cors'
 
-app.use(cors())
+app.use(cors({
+    origin: true,
+    credentials: true
+}));
 app.use(express.json())
 
 app.get('/', (req, res)=>{

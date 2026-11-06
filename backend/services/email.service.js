@@ -1,30 +1,40 @@
 import nodemailer from "nodemailer";
 import { _config } from "../config/config.js";
+import { Resend } from 'resend';
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: false, 
-  auth: {
-    user: _config.SMTP_EMAIL,
-    pass: _config.SMTP_APP_PASSWORD,
-  },
-});
+const resend = new Resend(_config.RESEND_API_KEY);
+
+const resendMail = async ({from, to, subject, html}) => {
+  const { data, error } = await resend.emails.send({
+    from,
+    to,
+    subject,
+    html,
+  });
+
+  if (error) {
+    return console.error({ error });
+  }
+
+  console.log({ data });
+};
+
+// const transporter = nodemailer.createTransport({
+//   host: "smtp.gmail.com",
+//   port: 465,
+//   secure: false, 
+//   auth: {
+//     user: _config.SMTP_EMAIL,
+//     pass: _config.SMTP_APP_PASSWORD,
+//   },
+// });
 
 export const sendOTP = async ({ email, otp }) => {
   
-  try {
-    await transporter.sendMail({
-      from: '"TeamSync" <nidhish1132007@gmail.com>',
-      to: email,
-      subject: "Verify your email | TeamSync",
-
-      text: `Welcome to TeamSync!
-        Your verification code is ${otp}.
-        Enter this code to verify your email address and complete your registration.
-        This code expires in 10 minutes. If you didn't request this, you can safely ignore this email.
-        TeamSync Team`,
-      html: `
+  const from = '"TeamSync" <onboarding@resend.dev>'
+  const to = email
+  const subject = "Verify your email | TeamSync"
+  const html =  `
         <!DOCTYPE html>
         <html>
           <body style="margin:0; padding:0; background-color:#f5f3ff; font-family:Arial,Helvetica,sans-serif;">
@@ -113,9 +123,11 @@ export const sendOTP = async ({ email, otp }) => {
 
           </body>
         </html>
-      `,
-    });
+      `
 
+  try {
+
+    resendMail({from, to, subject, html})
     console.log("Email sent");
     return true
 

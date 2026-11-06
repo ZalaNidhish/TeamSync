@@ -49,7 +49,6 @@ export const registerUserController = async (req, res)=>{
 
 export const sendOTPController = async (req, res)=>{
     const {email} = req.body
-    console.log(email);
     const otp = generateOTP()
 
     const user = await otpModel.findOne({email})
