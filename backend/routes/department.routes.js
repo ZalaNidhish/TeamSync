@@ -4,6 +4,6 @@ import {allDepartments} from '../controllers/department.controller.js'
 
 const router = Router()
 
-router.get('/', authenticate, allDepartments)
+router.get('/', allDepartments)
 
 export default router
