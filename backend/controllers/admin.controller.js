@@ -1,4 +1,5 @@
 import { departmentModel } from "../models/department.model.js"
+import { userModel } from "../models/user.model.js"
 
 export const createDepartment = async (req, res)=>{
     const {departmentName} = req.body
@@ -19,4 +20,29 @@ export const createDepartment = async (req, res)=>{
             department
         }
     })
+}
+
+export const approveEmployee = async (req, res)=>{
+    const {id} = req.params
+
+
+    const emp = await userModel.findById(id)
+
+    if(emp.isApproved){
+        return res.status(400).json({
+            message: "Employee already approved."
+        })
+    }
+
+    const {department} = req.body || emp.department
+
+    const newEmp = await userModel.findByIdAndUpdate(id, {department, isApproved: true}, {returnDocument: 'after'})
+
+    return res.status(200).json({
+        message: "Employee Approved Successfully.",
+        data: {
+            newEmp
+        }
+    })
+
 }

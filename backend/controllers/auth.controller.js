@@ -40,10 +40,90 @@ export const registerUserController = async (req, res)=>{
             email: user.email,
             phone: user.phone,
             dateOfBirth: user.dateOfBirth,
-            bio: user.bio
+            bio: user.bio,
+            isApproved: user.isApproved
         },
         accessToken
     })
+}
+
+export const loginUserController = async (req, res)=>{
+    
+    const {email, password} = req.body
+
+    const user = await userModel.findOne({email})
+
+    if(!user){
+        return res.status(400).json({
+            message: "Inavalid credentials"
+        })
+    }
+
+    const verify = bcrypt.compare(password, user.password)
+
+    if(!verify){
+        return res.status(400).json({
+            message: "Invalid credentials"
+        })
+    }
+
+    const {accessToken, refreshToken} = createTokens(user._id)
+
+    await userModel.findByIdAndUpdate(user._id, {refreshToken})
+
+    res.cookie("refreshToken", refreshToken)
+
+    return res.status(200).json({
+        message: "User Logged in Successfully.",
+        data: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            phone: user.phone,
+            department: user.department,
+            bio: user.bio,
+            dateOfBirth: user.dateOfBirth,
+            isApproved: user.isApproved
+        },
+        accessToken
+    })
+
+}
+
+export const loginWithGoogleUserController = async (req, res)=>{
+   
+    const user = req.user
+
+    const isUserRegistered = await userModel.findOne({email: user.email})
+
+    if(!isUserRegistered){
+        return res.status(400).json({
+            message: "Invalid credentials"
+        })
+    }
+
+    const {accessToken, refreshToken} = createTokens(user._id)
+
+    const newUser = await userModel.findByIdAndUpdate(user._id, {refreshToken, googleID: user.id}, {returnDocument: 'after'})
+
+    res.cookie("refreshToken", refreshToken)
+
+    return res.status(200).json({
+        message: "User Logged in Successfully.",
+        data: {
+            id: newUser._id,
+            name: newUser.name,
+            email: newUser.email,
+            phone: newUser.phone,
+            department: newUser.department,
+            bio: newUser.bio,
+            dateOfBirth: newUser.dateOfBirth,
+            isApproved: newUser.isApproved,
+            googleID: newUser.googleID
+        },
+        accessToken
+    })
+
 }
 
 export const sendOTPController = async (req, res)=>{

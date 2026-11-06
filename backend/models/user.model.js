@@ -7,7 +7,12 @@ const userSchema = mongoose.Schema({
     },
     password: {
         type: String,
-        required: true
+        required: function(){
+            return !this.googleID
+        }
+    },
+    googleID: {
+        type: String,
     },
     department: {
         type: mongoose.Schema.Types.ObjectId,
@@ -34,6 +39,11 @@ const userSchema = mongoose.Schema({
         type: String,
         enum: ["employee", "admin"],
         default: "employee"
+    },
+    isApproved: {
+        type: Boolean,
+        default: false,
+        required: true
     },
     refreshToken: {
         type: String

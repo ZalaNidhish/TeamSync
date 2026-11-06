@@ -46,6 +46,25 @@ export const registerValidator = [
     }
 ]
 
+export const loginValidator = [
+    body('email')
+    .exists().withMessage("Email is required")
+    .trim()
+    .isEmail().withMessage("Invalid Email Format"),
+    (req, res, next)=>{
+        const errors = validationResult(req)
+        if(!errors.isEmpty()){
+            return res.status(400).json({
+                message: "Invalid form input",
+                errors
+            })
+        }
+        next()
+    }
+
+]
+
+
 export const emailValidator = [
     body('email')
     .exists().withMessage("Email is required").bail()
