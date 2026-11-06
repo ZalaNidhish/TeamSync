@@ -102,9 +102,9 @@ export const loginWithGoogleUserController = async (req, res)=>{
         })
     }
 
-    const {accessToken, refreshToken} = createTokens(user._id)
+    const {accessToken, refreshToken} = createTokens(isUserRegistered._id)
 
-    const newUser = await userModel.findByIdAndUpdate(user._id, {refreshToken, googleID: user.id}, {returnDocument: 'after'})
+    const newUser = await userModel.findByIdAndUpdate(isUserRegistered._id, {refreshToken, googleID: user.id}, {returnDocument: 'after'})
 
     res.cookie("refreshToken", refreshToken)
 
