@@ -6,3 +6,8 @@ export const createTokens = (id)=>{
     const refreshToken = jwt.sign({id}, _config.REFRESH_TOKEN_SECRET)
     return {accessToken, refreshToken}
 }
+
+export const readAccessToken = (token)=>{
+    const decoded = jwt.verify(token, _config.ACCESS_TOKEN_SECRET)
+    return decoded.id
+}
