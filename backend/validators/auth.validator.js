@@ -19,7 +19,7 @@ export const registerValidator = [
     body('dateOfBirth')
     .exists("Date of Birth is required").bail()
     .trim()
-    .isDate({format: "DD-MM-YYYY"}).withMessage("Invalid date format").bail(),
+    .isDate({format: "YYYY-MM-DD"}).withMessage("Invalid date format").bail(),
 
     body('bio')
     .exists().withMessage("Bio is required")
