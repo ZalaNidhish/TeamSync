@@ -1,7 +1,6 @@
 import {userModel} from '../models/user.model.js'
 import bcrypt from 'bcrypt'
 import {createTokens} from '../utils/token.util.js'
-import {sendOTP} from '../services/email.service.js'
 import {generateOTP} from '../utils/generateOTP.util.js'
 import {otpModel} from '../models/otp.model.js'
 
@@ -60,16 +59,19 @@ export const sendOTPController = async (req, res)=>{
             await otpModel.create({email, otp})
         }
 
-        const sentMail = await sendOTP({email, otp})
+        // const sentMail = await sendOTP({email, otp})
 
-        if(!sentMail){
-            return res.status(400).json({
-                message: "OTP email Failed"
-            })
-        }
+        // if(!sentMail){
+        //     return res.status(400).json({
+        //         message: "OTP email Failed"
+        //     })
+        // }
 
         return res.status(200).json({
-            message: "OTP sent Successfully"
+            message: "OTP sent Successfully",
+            data: {
+                otp
+            }
         })
     }catch(err){
         console.log(err);

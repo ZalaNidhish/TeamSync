@@ -9,6 +9,6 @@ export const _config = {
     REFRESH_TOKEN_SECRET: process.env.REFRESH_TOKEN_SECRET,
     // SMTP_EMAIL: process.env.SMTP_EMAIL,
     // SMTP_APP_PASSWORD: process.env.SMTP_APP_PASSWORD,
-    RESEND_API_KEY: process.env.RESEND_API_KEY
+    // RESEND_API_KEY: process.env.RESEND_API_KEY
 }
 
