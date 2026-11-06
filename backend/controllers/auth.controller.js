@@ -94,7 +94,7 @@ export const loginWithGoogleUserController = async (req, res)=>{
    
     const user = req.user
 
-    const isUserRegistered = await userModel.findOne({email: user.email})
+    const isUserRegistered = await userModel.findOne({email: user.emails[0].value})
 
     if(!isUserRegistered){
         return res.status(400).json({
