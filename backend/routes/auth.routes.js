@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { loginUserController, loginWithGoogleUserController, registerUserController, sendOTPController, verifyOTPController } from "../controllers/auth.controller.js";
+import { checkUserExists, loginUserController, loginWithGoogleUserController, registerUserController, sendOTPController, verifyOTPController } from "../controllers/auth.controller.js";
 import { emailValidator, registerValidator, loginValidator } from "../validators/auth.validator.js";
 import passport from '../config/passport.js'
 const router = Router()
