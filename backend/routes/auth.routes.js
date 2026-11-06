@@ -7,6 +7,8 @@ const router = Router()
 router.post('/register', registerValidator, registerUserController)
 router.post('/login', loginValidator, loginUserController)
 
+router.post('/checkUser', emailValidator, checkUserExists)
+
 router.get('/google', passport.authenticate("google", {
         scope: ["profile", "email"],
         session: false,
