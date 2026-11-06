@@ -9,10 +9,10 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    // department: {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: "Department"
-    // },
+    department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Department"
+    },
     email: {
         type: String,
         required: true,

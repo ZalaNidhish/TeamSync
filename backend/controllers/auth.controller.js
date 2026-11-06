@@ -6,7 +6,7 @@ import {otpModel} from '../models/otp.model.js'
 
 export const registerUserController = async (req, res)=>{
 
-    const {name, email, phone, password, bio, dateOfBirth} = req.body
+    const {name, email, phone, password, department, bio, dateOfBirth} = req.body
 
     const isAlreadyUserExist = await userModel.findOne({email})
 
@@ -24,7 +24,7 @@ export const registerUserController = async (req, res)=>{
         })
     }
 
-    const user = await userModel.create({name, email, bio, phone, dateOfBirth, password: await bcrypt.hash(password, 10)})
+    const user = await userModel.create({name, email, bio, phone, department, dateOfBirth, password: await bcrypt.hash(password, 10)})
 
     const {accessToken, refreshToken} = createTokens(user._id)
 
