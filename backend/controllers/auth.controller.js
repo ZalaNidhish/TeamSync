@@ -16,13 +16,13 @@ export const registerUserController = async (req, res)=>{
         })
     }
 
-    const otpModelEmail = await otpModel.findOne({email})
+    // const otpModelEmail = await otpModel.findOne({email})
 
-    if(!otpModelEmail || !otpModelEmail.isEmailVerified){
-        return res.status(400).json({
-            message: "Email not verified"
-        })
-    }
+    // if(!otpModelEmail || !otpModelEmail.isEmailVerified){
+    //     return res.status(400).json({
+    //         message: "Email not verified"
+    //     })
+    // }
 
     const user = await userModel.create({name, email, bio, phone, department, dateOfBirth, password: await bcrypt.hash(password, 10)})
 
@@ -97,8 +97,13 @@ export const loginWithGoogleUserController = async (req, res)=>{
     const isUserRegistered = await userModel.findOne({email: user.emails[0].value})
 
     if(!isUserRegistered){
-        return res.status(400).json({
-            message: "Invalid credentials"
+        return res.status(200).json({
+            message: "User email, name and googleID fetched succesffully.",
+            data: {
+                googleID: user.id,
+                email: user.emails[0].value,
+                name: user.displayName,
+            }
         })
     }
 

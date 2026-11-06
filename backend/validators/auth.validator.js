@@ -51,6 +51,10 @@ export const loginValidator = [
     .exists().withMessage("Email is required")
     .trim()
     .isEmail().withMessage("Invalid Email Format"),
+
+    body('password')
+    .exists().withMessage("Password is required"),
+
     (req, res, next)=>{
         const errors = validationResult(req)
         if(!errors.isEmpty()){

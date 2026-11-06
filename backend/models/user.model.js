@@ -45,6 +45,11 @@ const userSchema = mongoose.Schema({
         default: false,
         required: true
     },
+    isProfileComplete: {
+        type: Boolean,
+        default: false,
+        required: true
+    },
     refreshToken: {
         type: String
     }
