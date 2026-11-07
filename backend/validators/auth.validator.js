@@ -30,9 +30,9 @@ export const registerValidator = [
     .trim()
     .isLength({min: 6}).withMessage("Password must be atleast 6 characters long"),
 
-    body('department')
-    .exists().withMessage("Department is required")
-    .isMongoId().withMessage("Invalid department ID"),
+    // body('department')
+    // .exists().withMessage("Department is required")
+    // .isMongoId().withMessage("Invalid department ID"),
 
     (req, res, next)=>{
         const errors = validationResult(req)

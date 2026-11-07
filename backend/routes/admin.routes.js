@@ -5,7 +5,7 @@ const router = Router()
 
 router.post('/department', authenticate, authorize("admin"), createDepartment)
 router.post('/approve/:id', authenticate, authorize("admin"), approveEmployee)
-router.post('/UnApprovedEmployees', authenticate, authorize("admin"), unApprovedEmployees)
+router.get('/UnApprovedEmployees', authenticate, authorize("admin"), unApprovedEmployees)
 
 
 export default router

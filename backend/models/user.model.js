@@ -16,7 +16,10 @@ const userSchema = mongoose.Schema({
     },
     department: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Department"
+        ref: "Department",
+        required: function(){
+            return this.role == "employee"
+        }
     },
     email: {
         type: String,
@@ -25,15 +28,21 @@ const userSchema = mongoose.Schema({
     },
     phone:{
         type: Number,
-        required: true
+        required: function(){
+            return this.role == "employee"
+        }
     },
     bio: {
         type: String,
-        required: true
+        required: function(){
+            return this.role == "employee"
+        }
     },
     dateOfBirth: {
         type: String,
-        required: true
+        required: function(){
+            return this.role == "employee"
+        }
     },
     role: {
         type: String,
@@ -42,13 +51,21 @@ const userSchema = mongoose.Schema({
     },
     isApproved: {
         type: Boolean,
-        default: false,
-        required: true
+        default: function(){
+            return this.role == "admin"
+        },
+        required: function(){
+            return this.role == "employee"
+        }
     },
     isProfileComplete: {
         type: Boolean,
-        default: false,
-        required: true
+        default: function(){
+            return this.role == "admin"
+        },
+        required: function(){
+            return this.role == "employee"
+        }
     },
     refreshToken: {
         type: String
