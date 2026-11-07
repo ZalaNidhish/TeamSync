@@ -177,20 +177,23 @@ export const verifyOTPController = async (req, res)=>{
 
     if(!user){
         return res.status(400).json({
-            message: "Email mismatch"
+            message: "Email mismatch",
+            verified: false
         })
     }
 
     if(otp !== user.otp){
         return res.status(400).json({
-            message: "Invalid OTP"
+            message: "Invalid OTP",
+            verified: false
         })
     }
 
     await otpModel.findByIdAndUpdate(user._id, {isEmailVerified: true})
 
     return res.status(200).json({
-        message: "Email Verification Complete."
+        message: "Email Verification Complete.",
+        verified: true
     })
 
 }
