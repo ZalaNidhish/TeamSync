@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt'
 import {createTokens} from '../utils/token.util.js'
 import {generateOTP} from '../utils/generateOTP.util.js'
 import {otpModel} from '../models/otp.model.js'
+import {userDraftModel} from '../models/userDraft.model.js'
 
 export const registerUserController = async (req, res)=>{
 
@@ -96,17 +97,12 @@ export const loginWithGoogleUserController = async (req, res)=>{
    
     const user = req.user
 
+    console.log(user)
+
     const isUserRegistered = await userModel.findOne({email: user.emails[0].value})
 
     if(!isUserRegistered){
-        return res.status(200).json({
-            message: "User email, name and googleID fetched succesffully.",
-            data: {
-                googleID: user.id,
-                email: user.emails[0].value,
-                name: user.displayName,
-            }
-        })
+        const newUser = await userDraftModel.create({name: user.name, email: user.emails[0].value, googleID: user.id})
     }
 
     const {accessToken, refreshToken} = createTokens(isUserRegistered._id)
