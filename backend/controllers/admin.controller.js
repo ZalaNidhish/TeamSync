@@ -22,18 +22,6 @@ export const createDepartment = async (req, res)=>{
     })
 }
 
-export const unApprovedEmployees = async (req, res)=>{
-    const emps = await userModel.find({isApproved: false})
-
-    return res.status(200).json({
-        message: "All unApproved Employees fetched.",
-        data: {
-            emps
-        }
-    })
-
-}
-
 export const approveEmployee = async (req, res)=>{
     const {id} = req.params
 
@@ -56,4 +44,31 @@ export const approveEmployee = async (req, res)=>{
             newEmp
         }
     })
+}
+
+export const listAllEmployees = async (req, res)=>{
+
+    const {department, isApproved, name} = req.query
+
+    const filter = {}
+
+    if(department){
+        filter.department = department
+    }
+    if(isApproved){
+        filter.isApproved = isApproved
+    }
+    if(name){
+        filter.name = name
+    }
+
+    const emps = await userModel.find(filter)
+
+    return res.status(200).json({
+        message: "Employees fetched successfully",
+        data: {
+            emps
+        }
+    })
+
 }
