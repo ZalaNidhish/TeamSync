@@ -137,9 +137,12 @@ export const sendOTPController = async (req, res)=>{
 
     const user = await otpModel.findOne({email})
 
+    const userInUserModel = await userModel.findOne({email})
+
     try{
         if(user){
             await otpModel.findByIdAndUpdate(user._id, {otp, isEmailVerified: false})
+
         }else{
             await otpModel.create({email, otp})
         }
@@ -155,8 +158,10 @@ export const sendOTPController = async (req, res)=>{
         return res.status(200).json({
             message: "OTP sent Successfully",
             data: {
-                otp
-            }
+                otp,
+                isUserAlreadyRegistered: !!userInUserModel
+            },
+            
         })
     }catch(err){
         console.log(err);
