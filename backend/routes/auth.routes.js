@@ -2,12 +2,13 @@ import { Router } from "express";
 import { checkUserExists, loginUserController, loginWithGoogleUserController, registerUserController, sendOTPController, verifyOTPController } from "../controllers/auth.controller.js";
 import { emailValidator, registerValidator, loginValidator } from "../validators/auth.validator.js";
 import passport from '../config/passport.js'
+import { unApprovedEmployees } from "../controllers/admin.controller.js";
 const router = Router()
 
 router.post('/register', registerValidator, registerUserController)
 router.post('/login', loginValidator, loginUserController)
 
-router.post('/checkUser', emailValidator, checkUserExists)
+router.post('/UnApprovedEmployees', unApprovedEmployees)
 
 router.get('/google', passport.authenticate("google", {
         scope: ["profile", "email"],

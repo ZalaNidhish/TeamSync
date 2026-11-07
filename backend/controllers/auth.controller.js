@@ -195,26 +195,3 @@ export const verifyOTPController = async (req, res)=>{
     })
 
 }
-
-export const checkUserExists = async (req, res)=>{
-    const {email} = req.body
-
-    const user = await userModel.findOne({email})
-
-    if(user){
-        return res.status(400).json({
-            message: "User already exists with this email",
-            data: {
-                continue: false
-            }
-        })
-    }
-
-    return res.status(200).json({
-        message: "You can continue reigstration with this email",
-        data: {
-            continue: true
-        }
-    })
-
-}
