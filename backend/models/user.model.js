@@ -17,9 +17,7 @@ const userSchema = mongoose.Schema({
     department: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Department",
-        required: function(){
-            return this.role == "employee"
-        }
+        required: true
     },
     email: {
         type: String,
@@ -28,21 +26,15 @@ const userSchema = mongoose.Schema({
     },
     phone:{
         type: Number,
-        required: function(){
-            return this.role == "employee"
-        }
-    },
+        required: true
+    }, 
     bio: {
         type: String,
-        required: function(){
-            return this.role == "employee"
-        }
+        required: true
     },
     dateOfBirth: {
         type: String,
-        required: function(){
-            return this.role == "employee"
-        }
+        required: true
     },
     role: {
         type: String,
