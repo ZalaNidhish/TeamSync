@@ -158,12 +158,9 @@ export const sendOTPController = async (req, res)=>{
         // }
 
         return res.status(200).json({
-            message: "OTP sent Successfully",
-            data: {
-                otp,
-                isUserAlreadyRegistered: !!userInUserModel
-            },
-            
+            message: "OTP sent Successfully",    
+            otp,
+            isUserAlreadyRegistered: !!userInUserModel
         })
     }catch(err){
         console.log(err);
