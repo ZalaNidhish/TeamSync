@@ -105,9 +105,9 @@ export const loginWithGoogleUserController = async (req, res)=>{
         if(!isUserDrafted){
             console.log(user.id, user.displayName, user.emails[0].value, user.photos[0].value);
             const newUser = await userDraftModel.create({name: user.displayName, email: user.emails[0].value, googleID: user.id, avatar: user.photos[0].value})
-            return res.redirect('http://localhost:5173/auth/register')        
+            return res.redirect('http://localhost:5173/auth/register?currentStep=2')        
         }else{
-            return res.redirect('http://localhost:5173/auth/register')
+            return res.redirect('http://localhost:5173/auth/register?currentStep=2')
         }
     }
 
@@ -131,6 +131,26 @@ export const loginWithGoogleUserController = async (req, res)=>{
             googleID: newUser.googleID
         },
         accessToken
+    })
+
+}
+
+export const getUserDraft = async (req, res)=>{
+    const {email} = req.body
+
+    const user = await userDraftModel.findOne({email})
+
+    if(!user){
+        return res.status(400).json({
+            message: "Email not found in draft. visit /api/auth/google",
+            isUserDraftFound: false
+        })
+    }
+
+    return res.status(200).json({
+        message: "User Draft Found.",
+        isUserDraftFound: true,
+        user
     })
 
 }
