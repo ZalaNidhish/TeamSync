@@ -32,6 +32,9 @@ const userSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    avatar: {
+        type: String
+    }
     dateOfBirth: {
         type: String,
         required: true
