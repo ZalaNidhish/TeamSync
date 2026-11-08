@@ -136,7 +136,7 @@ export const loginWithGoogleUserController = async (req, res)=>{
 }
 
 export const getUserDraft = async (req, res)=>{
-    const {email} = req.body
+    const {email} = req.params
 
     const user = await userDraftModel.findOne({email})
 
