@@ -4,6 +4,7 @@ import {createTokens} from '../utils/token.util.js'
 import {generateOTP} from '../utils/generateOTP.util.js'
 import {otpModel} from '../models/otp.model.js'
 import {userDraftModel} from '../models/userDraft.model.js'
+import { improveBio } from '../services/groq.service.js'
 
 export const registerUserController = async (req, res)=>{
 
@@ -211,4 +212,17 @@ export const verifyOTPController = async (req, res)=>{
         verified: true
     })
 
+}
+
+export const improveBioController = async (req, res)=>{
+    const {bio} = req.body
+    try{
+        const newbio = await improveBio(bio)
+        return res.status(200).json({
+            message: "Bio improved successsfuly",
+            bio: newbio
+        })
+    }catch(err){
+        return err
+    }
 }

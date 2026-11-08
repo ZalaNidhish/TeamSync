@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getUserDraft, loginUserController, loginWithGoogleUserController, registerUserController, sendOTPController, verifyOTPController } from "../controllers/auth.controller.js";
+import { getUserDraft, improveBioController, loginUserController, loginWithGoogleUserController, registerUserController, sendOTPController, verifyOTPController } from "../controllers/auth.controller.js";
 import { emailValidator, registerValidator, loginValidator } from "../validators/auth.validator.js";
 import passport from '../config/passport.js'
 const router = Router()
@@ -23,5 +23,7 @@ router.post('/sendOTP', emailValidator, sendOTPController)
 router.post('/verifyOTP', emailValidator, verifyOTPController)
 
 router.post('/draft/:email', getUserDraft)
+
+router.post('/bio', improveBioController)
 
 export default router
