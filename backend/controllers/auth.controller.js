@@ -99,16 +99,9 @@ export const loginWithGoogleUserController = async (req, res)=>{
 
     const isUserRegistered = await userModel.findOne({email: user.emails[0].value})
 
-    const isUserDrafted = await userDraftModel.findOne({email: user.emails[0].value})
-
     if(!isUserRegistered){
-        if(!isUserDrafted){
-            console.log(user.id, user.displayName, user.emails[0].value, user.photos[0].value);
-            const newUser = await userDraftModel.create({name: user.displayName, email: user.emails[0].value, googleID: user.id, avatar: user.photos[0].value})
-            return res.redirect('http://localhost:5173/auth/register?currentStep=2')        
-        }else{
-            return res.redirect('http://localhost:5173/auth/register?currentStep=2')
-        }
+        const newUser = {id: user.id, name: user.displayName, email: user.emails[0].value, avatar: user.photos[0].value}
+        return res.redirect(`http://localhost:5173/auth/register?currentStep=2&user=${JSON.stringify(newUser)}`)        
     }
 
     const {accessToken, refreshToken} = createTokens(isUserRegistered._id)
