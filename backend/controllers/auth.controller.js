@@ -100,9 +100,9 @@ export const loginWithGoogleUserController = async (req, res)=>{
     const isUserRegistered = await userModel.findOne({email: user.emails[0].value})
 
     if(!isUserRegistered){
-
-        // const newUser = await userDraftModel.create({name: user.givenName, email: user.emails[0].value, googleID: user.id, avatar: user.photos[0].value})
-        return console.log(user.id, user.displayName, user.emails[0].value, user.photos[0].value);
+        console.log(user.id, user.displayName, user.emails[0].value, user.photos[0].value);
+        const newUser = await userDraftModel.create({name: user.displayName, email: user.emails[0].value, googleID: user.id, avatar: user.photos[0].value})
+        return res.json(newUser)
     }
 
     const {accessToken, refreshToken} = createTokens(isUserRegistered._id)
