@@ -105,11 +105,9 @@ export const loginWithGoogleUserController = async (req, res)=>{
         if(!isUserDrafted){
             console.log(user.id, user.displayName, user.emails[0].value, user.photos[0].value);
             const newUser = await userDraftModel.create({name: user.displayName, email: user.emails[0].value, googleID: user.id, avatar: user.photos[0].value})
-            return res.json(newUser)        
+            return res.redirect('http://localhost:5173/auth/register')        
         }else{
-            return res.status(400).json({
-                message: "User already exists in draft",
-            })
+            return res.redirect('http://localhost:5173/auth/register')
         }
     }
 
