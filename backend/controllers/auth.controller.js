@@ -99,10 +99,19 @@ export const loginWithGoogleUserController = async (req, res)=>{
 
     const isUserRegistered = await userModel.findOne({email: user.emails[0].value})
 
+    // const isUserDrafted = awairt userDraftModel.findOne({email})
+
     if(!isUserRegistered){
-        console.log(user.id, user.displayName, user.emails[0].value, user.photos[0].value);
-        const newUser = await userDraftModel.create({name: user.displayName, email: user.emails[0].value, googleID: user.id, avatar: user.photos[0].value})
-        return res.json(newUser)
+        try{
+            console.log(user.id, user.displayName, user.emails[0].value, user.photos[0].value);
+            const newUser = await userDraftModel.create({name: user.displayName, email: user.emails[0].value, googleID: user.id, avatar: user.photos[0].value})
+            return res.json(newUser)
+        }catch(err){
+            return res.status(400).json({
+                message: "User already exists in Draft",
+                errors: err
+            })
+        }
     }
 
     const {accessToken, refreshToken} = createTokens(isUserRegistered._id)
