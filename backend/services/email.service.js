@@ -1,4 +1,3 @@
-import nodemailer from "nodemailer";
 import { _config } from "../config/config.js";
 import { Resend } from 'resend';
 
