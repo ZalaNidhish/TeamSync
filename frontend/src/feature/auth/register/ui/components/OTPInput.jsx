@@ -7,7 +7,7 @@ const OTPInput = ({registerMethod}) => {
 
   const otpArr = ['', '', '', '']
   return (
-    <form onSubmit={handleSubmit(handleVerifyOTP)} className="mt-6 pt-6 border-t border-[#E4E4E7] space-y-5 text-left">
+    <form onSubmit={handleSubmit(handleVerifyOTP)} className="mt-6 pt-6 border-t border-[#E4E4E7] space-y-5 text-left flex flex-col">
       <div>
         <div className="flex items-center justify-between">
           <h3 className="text-base font-semibold text-[#18181B]">
@@ -43,16 +43,12 @@ const OTPInput = ({registerMethod}) => {
       </div>
 
       {/* Verify OTP Button */}
-      <Button
+      <button
         type="submit"
-        variant="primary"
-        size="lg"
-        fullWidth
-        icon={ArrowRight}
-        iconPosition="right"
+        className='bg-[#6D28D9] px-6 py-2 text-nowrap text-white flex gap-4 rounded self-end cursor-pointer hover:scale-95'
       >
-        Verify OTP
-      </Button>
+        Verify OTP <ArrowRight />
+      </button>
     </form>
   );
 };

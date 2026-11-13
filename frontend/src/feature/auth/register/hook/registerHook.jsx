@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import {useForm} from 'react-hook-form'
-import { googleAPi, improveBioApi, sendOTP, verifyOTP } from '../api/registerApi'
+import { googleAPi, improveBioApi, registerUserApi, sendOTP, verifyOTP, getDepartmentApi } from '../api/registerApi'
 import { useSearchParams } from 'react-router'
- 
+
 export const useRegister = ()=>{
     const {register, handleSubmit, reset, formState:{errors}, watch} = useForm()
 
@@ -12,12 +12,20 @@ export const useRegister = ()=>{
     const [otpSending, setOtpSending] = useState(false)
     const [tempOtp, setTempOtp] = useState(null)
     const [resendOtp, setResendOtp] = useState(false)
-
+    const [departments, setDepartments] = useState(null)
     const [improvingBio, setImprovingBio] = useState(false)
     const [bioField, setBioField] = useState(registerData.bio || '')
 
     const [sp, setSp] = useSearchParams();
     const stepFromUrl = Number(sp.get('currentStep'));
+    
+    useEffect(()=>{
+        const func = async ()=>{
+            const res = await getDepartmentApi()
+            setDepartments(res.data.departments)
+        }
+        func()
+    }, [])
 
     useEffect(()=>{
         localStorage.setItem("teamSync_registerData", JSON.stringify(registerData))
@@ -73,6 +81,7 @@ export const useRegister = ()=>{
     const improveBio = async(data)=>{
         setImprovingBio(true)
         const res = await improveBioApi(data)
+        setRegisterData({...registerData, bio: res.bio})
         setBioField(res.bio)
         setImprovingBio(false)
     }
@@ -82,10 +91,43 @@ export const useRegister = ()=>{
     }
 
     const handlePersonalDetails = async (data)=>{
-        console.log(data);
+        const updated_data = {
+            googleID: registerData.id || '',
+            email: registerData.email,
+            name: data.name,
+            department: data.department,
+            phone: data.phone,
+            bio: data.bio,
+            dateOfBirth: data.dateOfBirth
+        }
+        console.log(updated_data);
+        setRegisterData(updated_data)
+        setCurrentStep(3)
     }
 
+    const handleSecurityDetails = async(data)=>{
+        setRegisterData({...registerData, password: data.password})
+        setCurrentStep(4)
+    }
 
-    return {register, handleVerifyOTP, handleSubmit, errors, watch, registerData, setRegisterData, currentStep, setCurrentStep, otpSending, otpSent, setOtpSending, setOtpSent, handleSendOTP, tempOtp, setTempOtp, resendOtp, setResendOtp, handleGoogle, improveBio, improvingBio, setImprovingBio, bioField, setBioField, handlePersonalDetails}
+    const handleRegister = async(data)=>{
+        const updated_data = {
+            googleID: registerData.id || '',
+            avatar: registerData.avatar || '',
+            email: data.email,
+            name: data.name,
+            department: data.department,
+            phone: data.phone,
+            bio: data.bio,
+            dateOfBirth: data.dateOfBirth,
+            password: data.password
+        }
+        console.log(updated_data);
+        setRegisterData(updated_data)
+        const res = await registerUserApi(updated_data)
+        console.log(res.message);
+    }
+
+    return {register, registerData, handleVerifyOTP, handleRegister, handleSubmit, errors, watch, registerData, setRegisterData, currentStep, setCurrentStep, otpSending, otpSent, setOtpSending, setOtpSent, handleSendOTP, tempOtp, setTempOtp, resendOtp, setResendOtp, handleGoogle, improveBio, improvingBio, setImprovingBio, bioField, setBioField, handlePersonalDetails, handleSecurityDetails, watch, departments}
 
 }

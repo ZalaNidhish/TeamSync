@@ -3,11 +3,12 @@ import {useState} from 'react';
 import Input from '../../../../shared/ui/components/Input';
 import Button from '../../../../shared/ui/components/Button';
 
-const SecurityDetails = ({onBack, onNext}) => {
+const SecurityDetails = ({onBack, onNext, registerMethod}) => {
   const [showPassword, setShowPassword] = useState (false);
   const [showConfirmPassword, setShowConfirmPassword] = useState (false);
+  const {register, handleSubmit, errors, watch, handleSecurityDetails, registerData,} = registerMethod
   return (
-    <form className="space-y-6 text-left">
+    <form onSubmit={handleSubmit(handleSecurityDetails)} className="space-y-6 text-left">
       {/* Header */}
       <div className="space-y-1">
         <h2 className="text-2xl font-bold text-[#18181B] tracking-tight">
@@ -24,7 +25,11 @@ const SecurityDetails = ({onBack, onNext}) => {
           <Input
             label="Password"
             id="password"
+            {...register('password', {
+              required: 'Password is required.'
+            })}
             name="password"
+            defaultValue={registerData.password}
             type={showPassword ? 'text' : 'password'}
             placeholder="Create a strong password"
             icon={Lock}
@@ -43,6 +48,7 @@ const SecurityDetails = ({onBack, onNext}) => {
               </button>
             }
           />
+          {errors.password && <p className='text-red-600 text-sm'>{errors.password.message}</p>}
         </div>
 
         {/* Confirm Password */}
@@ -54,7 +60,13 @@ const SecurityDetails = ({onBack, onNext}) => {
             type={showConfirmPassword ? 'text' : 'password'}
             placeholder="Confirm your password"
             icon={Lock}
+            defaultValue={registerData.password}
             required
+            {...register('confirmPassword', {
+              required: 'Confirm Password is required.',
+              validate: value =>
+              value === watch('password') || 'Passwords do not match.'
+            })}
             autoComplete="new-password"
             rightElement={
               <button
@@ -73,6 +85,7 @@ const SecurityDetails = ({onBack, onNext}) => {
               </button>
             }
           />
+          {errors.confirmPassword && <p className='text-red-600 text-sm'>{errors.confirmPassword.message}</p>}
         </div>
 
       </div>
@@ -94,7 +107,6 @@ const SecurityDetails = ({onBack, onNext}) => {
           variant="primary"
           size="lg"
           icon={ArrowRight}
-          onClick={onNext}
           iconPosition="right"
           className="w-full sm:w-auto px-8"
         >

@@ -50,7 +50,7 @@ const Select = ({
             </option>}
           {options.map (opt => {
             const optVal = typeof opt === 'string' ? opt : opt.value;
-            const optLabel = typeof opt === 'string' ? opt : opt.label;
+            const optLabel = typeof opt === 'string' ? opt : opt.departmentName;
             return (
               <option key={optVal} value={optVal} className="text-[#18181B]">
                 {optLabel}

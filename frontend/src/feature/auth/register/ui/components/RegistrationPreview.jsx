@@ -3,9 +3,12 @@ import Button from '../../../../shared/ui/components/Button';
 import PreviewField from './PreviewField';
 import PreviewSection from './PreviewSection';
 
-const RegistrationPreview = ({onEditStep, onBack, onNext}) => {
+const RegistrationPreview = ({onEditStep, onBack, onNext, registerMethod}) => {
+
+  const {handleSubmit, registerData, handleRegister} = registerMethod
+
   return (
-    <form className="space-y-6 text-left">
+    <form onSubmit={handleSubmit(handleRegister)} className="space-y-6 text-left">
       {/* Header */}
       <div className="space-y-1">
         <h2 className="text-2xl font-bold text-[#18181B] tracking-tight">
@@ -23,7 +26,7 @@ const RegistrationPreview = ({onEditStep, onBack, onNext}) => {
           icon={Mail}
           onEdit={() => onEditStep (1)}
         >
-          <PreviewField label="Verified Work Email" />
+          <PreviewField label="Verified Work Email" value={registerData.email}/>
         </PreviewSection>
 
         {/* Section 2 – Employee Information */}
@@ -32,11 +35,11 @@ const RegistrationPreview = ({onEditStep, onBack, onNext}) => {
           icon={User}
           onEdit={() => onEditStep (2)}
         >
-          <PreviewField label="Full Name" />
-          <PreviewField label="Department" />
-          <PreviewField label="Phone Number" />
-          <PreviewField label="Date of Birth" />
-          <PreviewField label="Bio / Introduction" fullWidth />
+          <PreviewField label="Full Name" value={registerData.name}  />
+          <PreviewField label="Department" value={registerData.department} />
+          <PreviewField label="Phone Number" value={registerData.phone} />
+          <PreviewField label="Date of Birth" value={registerData.dateOfBirth} />
+          <PreviewField label="Bio / Introduction" fullWidth value={registerData.bio} />
         </PreviewSection>
 
         {/* Section 3 – Security Information */}
@@ -45,7 +48,7 @@ const RegistrationPreview = ({onEditStep, onBack, onNext}) => {
           icon={ShieldCheck}
           onEdit={() => onEditStep (3)}
         >
-          <PreviewField label="Account Password" />
+          <PreviewField label="Account Password" value={registerData.password} />
         </PreviewSection>
       </div>
 
@@ -74,7 +77,6 @@ const RegistrationPreview = ({onEditStep, onBack, onNext}) => {
           variant="primary"
           size="lg"
           icon={Check}
-          onClick={onNext}
           iconPosition="right"
           className="w-full sm:w-auto px-10 font-semibold shadow-none"
         >

@@ -5,6 +5,7 @@ import {generateOTP} from '../utils/generateOTP.util.js'
 import {otpModel} from '../models/otp.model.js'
 import {userDraftModel} from '../models/userDraft.model.js'
 import { improveBio } from '../services/groq.service.js'
+import {PDFParse} from 'pdf-parse'
 
 export const registerUserController = async (req, res)=>{
 
@@ -25,6 +26,7 @@ export const registerUserController = async (req, res)=>{
     //         message: "Email not verified"
     //     })
     // }
+
 
     const user = await userModel.create({name, email, bio, phone, role, department, dateOfBirth, password: await bcrypt.hash(password, 10)})
 
@@ -215,9 +217,27 @@ export const verifyOTPController = async (req, res)=>{
 }
 
 export const improveBioController = async (req, res)=>{
+    const resume = req.file
     const {bio} = req.body
+
+    let finalText
+
     try{
-        const newbio = await improveBio(bio)
+        if (!req.file && !req.body) {
+            return res.status(400).json({
+                message: "InAppropriate Data"
+            })
+        }   
+        else if(req.file){
+            const parser = new PDFParse({
+                data: resume.buffer
+            });
+            const result = await parser.getText();
+            finalText = result.text
+        }else{
+            finalText = bio
+        }
+        const newbio = await improveBio(finalText)
         return res.status(200).json({
             message: "Bio improved successsfuly",
             bio: newbio
@@ -225,4 +245,5 @@ export const improveBioController = async (req, res)=>{
     }catch(err){
         return err
     }
+    
 }
