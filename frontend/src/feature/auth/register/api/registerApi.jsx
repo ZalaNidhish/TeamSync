@@ -42,7 +42,7 @@ export const googleAPi = async ()=>{
 
 export const improveBioApi = async(bio)=>{
     try{
-        const res = await api.post('/auth/bio', {bio})
+        const res = await api.post('/auth/bio', bio)
         return res.data
     }
     catch(err){

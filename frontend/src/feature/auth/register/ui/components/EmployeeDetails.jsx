@@ -184,7 +184,7 @@ const EmployeeDetails = ({ registerMethod, onBack }) => {
                   if (bio.length < 20) {
                     setBioError("Enter atleast 20 characters");
                   } else {
-                    improveBio(bio.value);
+                    improveBio(bio);
                     setBioError(null)
                   }
                 }}

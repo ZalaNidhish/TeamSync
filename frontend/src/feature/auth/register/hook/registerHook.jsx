@@ -78,12 +78,29 @@ export const useRegister = ()=>{
         setOtpSent(true)
     }
 
-    const improveBio = async(data)=>{
-        setImprovingBio(true)
-        const res = await improveBioApi(data)
-        setRegisterData({...registerData, bio: res.bio})
-        setBioField(res.bio)
-        setImprovingBio(false)
+    const improveBio = async (data) => {
+        try {
+            setImprovingBio(true);
+
+            const res = await improveBioApi(
+                typeof data === "string"
+                    ? { bio: data }
+                    : data
+            );
+
+            setRegisterData({
+                ...registerData,
+                bio: res.bio
+            });
+
+            setBioField(res.bio);
+        }
+        catch (err) {
+            console.error(err);
+        }
+        finally {
+            setImprovingBio(false);
+        }
     }
 
     const handleGoogle = async ()=>{
