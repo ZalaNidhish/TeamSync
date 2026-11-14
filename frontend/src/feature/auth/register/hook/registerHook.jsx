@@ -81,18 +81,16 @@ export const useRegister = ()=>{
     const improveBio = async (data) => {
         try {
             setImprovingBio(true);
-
             const res = await improveBioApi(
                 typeof data === "string"
                     ? { bio: data }
                     : data
             );
-
+            console.log(res);
             setRegisterData({
                 ...registerData,
                 bio: res.bio
             });
-
             setBioField(res.bio);
         }
         catch (err) {
